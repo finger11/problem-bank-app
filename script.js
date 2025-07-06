@@ -25,23 +25,48 @@ document.addEventListener("DOMContentLoaded", () => {
         currentSubject = q.subject_name;
       }
       examDiv.innerHTML += `
-        <div>
+        <div class="question" data-idx="${index}">
           <p>${index+1}. ${q.question_text}</p>
-          ${q.choices.map((c,i) => 
-            `<label><input type="radio" name="q${index}" value="${i+1}"> ${c}</label><br>`
-          ).join('')}
+          <div class="choices">
+            ${q.choices.map((c,i) => 
+              `<button type="button" class="choice-btn" data-q="${index}" data-v="${i+1}">${c}</button>`
+            ).join('')}
+          </div>
         </div>
         <hr>
       `;
     });
-    examDiv.innerHTML += `<button id="submitBtn">제출</button>`;
+    examDiv.innerHTML += `<button class="submit" id="submitBtn">제출</button>`;
 
+    // 선택 버튼 이벤트
+    document.querySelectorAll(".choice-btn").forEach(btn => {
+      btn.addEventListener("click", e => {
+        const qIndex = e.target.dataset.q;
+        const val = e.target.dataset.v;
+        document.querySelectorAll(`.choice-btn[data-q='${qIndex}']`).forEach(b => {
+          b.classList.remove("selected");
+        });
+        e.target.classList.add("selected");
+        // hidden input으로 값 보관
+        let hidden = document.getElementById(`q${qIndex}`);
+        if (!hidden) {
+          hidden = document.createElement("input");
+          hidden.type = "hidden";
+          hidden.name = `q${qIndex}`;
+          hidden.id = `q${qIndex}`;
+          examDiv.appendChild(hidden);
+        }
+        hidden.value = val;
+      });
+    });
+
+    // 제출 버튼
     document.getElementById("submitBtn").addEventListener("click", () => {
       let score = 0;
       const results = [];
       selectedQuestions.forEach((q, index) => {
-        const sel = document.querySelector(`input[name='q${index}']:checked`);
-        const selected = sel ? parseInt(sel.value) : null;
+        const hidden = document.getElementById(`q${index}`);
+        const selected = hidden ? parseInt(hidden.value) : null;
         const correct = q.answer;
         const isCorrect = selected === correct;
         if(isCorrect) score += 2.22;
