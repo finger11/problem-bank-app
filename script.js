@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   async function startExam() {
-    document.getElementById("startBtn").style.display = "none";
+    document.getElementById("startBtn").style.display = "none";  // 시작 버튼 숨김
 
     const res = await fetch("questions.json");
     const data = await res.json();
@@ -70,12 +70,28 @@ document.addEventListener("DOMContentLoaded", () => {
     resultDiv.innerHTML += `<h1 style="color:${passFailColor}">${correctCount}/${totalQuestions} (${passFail})</h1>`;
 
     results.forEach((item, idx) => {
+      let choicesHtml = item.q.choices.map((choice, i) => {
+        let mark = "";
+        let markColor = "";
+
+        if (item.q.answer === i + 1) {
+          // 정답 선택지에는 [O] 파란색
+          mark = "[O]";
+          markColor = "blue";
+        }
+        if (item.selected === i + 1 && item.selected !== item.q.answer) {
+          // 사용자가 고른 오답 선택지에는 [X] 빨간색
+          mark = "[X]";
+          markColor = "red";
+        }
+
+        return `<div>${choice} ${mark ? `<span style="color:${markColor}">${mark}</span>` : ""}</div>`;
+      }).join('');
+
       resultDiv.innerHTML += `
         <div>
           <p>${idx+1}. ${item.q.question_text.replace(/\n/g, "<br>")}</p>
-          <p>정답: ${item.q.choices[item.q.answer -1]}</p>
-          <p>당신의 답: ${item.selected ? item.q.choices[item.selected -1] : "무응답"}</p>
-          ${item.isCorrect ? "<span style='color:green'>⭕ 정답</span>" : "<span style='color:red'>❌ 오답</span>"}
+          ${choicesHtml}
           ${item.q.explanation ? `<p><em>해설: ${item.q.explanation.replace(/\n/g,"<br>")}</em></p>` : ""}
         </div>
         <hr>
