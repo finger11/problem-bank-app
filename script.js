@@ -52,40 +52,35 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-function showResult(score, results) {
-  window.scrollTo(0, 0);
-  const examDiv = document.getElementById("exam");
-  examDiv.style.display = "none";
-  const resultDiv = document.getElementById("result");
-  resultDiv.innerHTML = "";
+  function showResult(score, results) {
+    window.scrollTo(0, 0);
+    const examDiv = document.getElementById("exam");
+    examDiv.style.display = "none";
+    const resultDiv = document.getElementById("result");
+    resultDiv.innerHTML = "";
 
-  const totalScore = Math.round(score);
-  const isPass = totalScore >= 60;
-  const passFail = isPass ? "합격" : "불합격";
-  const passFailColor = isPass ? "blue" : "red";
+    const totalScore = Math.round(score);
+    const isPass = totalScore >= 60;
+    const passFail = isPass ? "합격" : "불합격";
+    const passFailColor = isPass ? "blue" : "red";
 
-  const totalQuestions = results.length;
-  const correctCount = results.filter(r => r.isCorrect).length;
+    const totalQuestions = results.length;
+    const correctCount = results.filter(r => r.isCorrect).length;
 
-  resultDiv.innerHTML += `<h1 style="color:${passFailColor}">${correctCount}/${totalQuestions} (${passFail})</h1>`;
+    resultDiv.innerHTML += `<h1 style="color:${passFailColor}">${correctCount}/${totalQuestions} (${passFail})</h1>`;
 
-  results.forEach((item, idx) => {
-    resultDiv.innerHTML += `
-      <div>
-        <p>${idx+1}. ${item.q.question_text}</p>
-        <p>정답: ${item.q.choices[item.q.answer -1]}</p>
-        <p>당신의 답: ${item.selected ? item.q.choices[item.selected -1] : "무응답"}</p>
-        ${item.isCorrect ? "<span style='color:green'>⭕ 정답</span>" : "<span style='color:red'>❌ 오답</span>"}
-        ${item.q.explanation ? `<p><em>해설: ${item.q.explanation}</em></p>` : ""}
-      </div>
-      <hr>
-    `;
-  });
-
-  resultDiv.innerHTML += `
-    <button class="submit" onclick="window.location.reload()">모의고사 다시풀기</button>
-  `;
-}
+    results.forEach((item, idx) => {
+      resultDiv.innerHTML += `
+        <div>
+          <p>${idx+1}. ${item.q.question_text}</p>
+          <p>정답: ${item.q.choices[item.q.answer -1]}</p>
+          <p>당신의 답: ${item.selected ? item.q.choices[item.selected -1] : "무응답"}</p>
+          ${item.isCorrect ? "<span style='color:green'>⭕ 정답</span>" : "<span style='color:red'>❌ 오답</span>"}
+          ${item.q.explanation ? `<p><em>해설: ${item.q.explanation}</em></p>` : ""}
+        </div>
+        <hr>
+      `;
+    });
 
     resultDiv.innerHTML += `
       <button class="submit" onclick="window.location.reload()">모의고사 다시풀기</button>
