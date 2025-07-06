@@ -75,16 +75,27 @@ document.addEventListener("DOMContentLoaded", () => {
         let markColor = "";
 
         if (item.q.answer === i + 1) {
-          // 정답 선택지에는 [O] 파란색
+          // 정답
           mark = "[O]";
           markColor = "blue";
         }
         if (item.selected === i + 1 && item.selected !== item.q.answer) {
-          // 사용자가 고른 오답 선택지에는 [X] 빨간색
+          // 오답으로 선택한 경우
           mark = "[X]";
           markColor = "red";
         }
+        if (item.selected === null && item.q.answer !== i + 1) {
+          // 무응답인데 정답이 아닌 보기에는 [무응답]
+          mark = "";
+          markColor = "";
+        }
+        if (item.selected === null && item.q.answer === i + 1) {
+          // 무응답이고 정답 항목
+          mark = "[무응답]";
+          markColor = "red";
+        }
 
+        // 최종 표기
         return `<div>${choice} ${mark ? `<span style="color:${markColor}">${mark}</span>` : ""}</div>`;
       }).join('');
 
