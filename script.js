@@ -1,7 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   async function startExam() {
-    // 시작버튼 숨기기
-    document.getElementById("startBtn").style.display = "none";
+    document.getElementById("startBtn").style.display = "none";  // 시작 버튼만 확실히 숨기기
 
     const res = await fetch("questions.json");
     const data = await res.json();
@@ -76,6 +75,5 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 전역으로 함수 연결
   window.startExam = startExam;
 });
