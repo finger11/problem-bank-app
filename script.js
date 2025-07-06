@@ -2,6 +2,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let questions = [];
 
   async function startExam() {
+    document.getElementById("startBtn").style.display = "none";  // 시작 버튼 숨기기
+
     const res = await fetch("questions.json");
     const data = await res.json();
 
