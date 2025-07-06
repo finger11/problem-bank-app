@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   async function startExam() {
-    document.getElementById("startBtn").style.display = "none";  // 시작 버튼 숨김
+    document.getElementById("startBtn").style.display = "none";
 
     const res = await fetch("questions.json");
     const data = await res.json();
@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       examDiv.innerHTML += `
         <div class="question">
-          <p>${index+1}. ${q.question_text}</p>
+          <p>${index+1}. ${q.question_text.replace(/\n/g, "<br>")}</p>
           ${q.choices.map((c,i) => 
             `<label><input type="radio" name="q${index}" value="${i+1}"> ${c}</label>`
           ).join('')}
@@ -72,11 +72,11 @@ document.addEventListener("DOMContentLoaded", () => {
     results.forEach((item, idx) => {
       resultDiv.innerHTML += `
         <div>
-          <p>${idx+1}. ${item.q.question_text}</p>
+          <p>${idx+1}. ${item.q.question_text.replace(/\n/g, "<br>")}</p>
           <p>정답: ${item.q.choices[item.q.answer -1]}</p>
           <p>당신의 답: ${item.selected ? item.q.choices[item.selected -1] : "무응답"}</p>
           ${item.isCorrect ? "<span style='color:green'>⭕ 정답</span>" : "<span style='color:red'>❌ 오답</span>"}
-          ${item.q.explanation ? `<p><em>해설: ${item.q.explanation}</em></p>` : ""}
+          ${item.q.explanation ? `<p><em>해설: ${item.q.explanation.replace(/\n/g,"<br>")}</em></p>` : ""}
         </div>
         <hr>
       `;
