@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const res = await fetch("questions.json");
     const data = await res.json();
 
-    const rules = { 1:5, 2:10, 3:3, 4:15, 5:10 };
+    const rules = { 1:5, 2:10, 3:5, 4:15, 5:10 };
     let selectedQuestions = [];
 
     for (const [subject_id, count] of Object.entries(rules)) {
