@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   async function startExam() {
-    document.getElementById("startBtn").style.display = "none";  // 시작 버튼만 확실히 숨기기
+    document.getElementById("startBtn").style.display = "none";  // 시작 버튼 숨김
 
     const res = await fetch("questions.json");
     const data = await res.json();
@@ -9,7 +9,8 @@ document.addEventListener("DOMContentLoaded", () => {
     let selectedQuestions = [];
 
     for (const [subject_id, count] of Object.entries(rules)) {
-      const pool = data.filter(q => q.subject_id == subject_id);
+      const pool = data.filter(q => Number(q.subject_id) === Number(subject_id));
+      console.log(`과목 ${subject_id} 문제은행 총 ${pool.length}개, 필요한 ${count}개`);
       selectedQuestions = selectedQuestions.concat(
         pool.sort(() => 0.5 - Math.random()).slice(0, count)
       );
