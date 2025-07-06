@@ -9,16 +9,19 @@
       h1 { text-align: center; }
       h2 { background:#eee; padding: 0.5rem; }
       .question { margin-bottom: 1rem; }
-      label {
-        display:block;
-        margin: 0.5rem 0;
-        padding: 0.5rem;
+      .choice-btn {
+        display: block;
+        width: 100%;
+        margin: 0.3rem 0;
+        padding: 0.7rem;
+        font-size: 1rem;
         border: 1px solid #ccc;
+        background: #f9f9f9;
         border-radius: 4px;
       }
-      input[type=radio] {
-        transform: scale(1.5);
-        margin-right: 0.5rem;
+      .choice-btn.selected {
+        background: #007bff;
+        color: #fff;
       }
       button.submit {
         padding: 0.7rem 1.2rem;
@@ -32,7 +35,7 @@
   </head>
   <body>
     <h1>직업능력개발훈련교사 종합평가</h1>
-    <button id="startBtn" onclick="startExam()">모의고사 시작</button>
+    <button onclick="startExam()">모의고사 시작</button>
     <div id="exam"></div>
     <div id="result"></div>
     <script src="script.js"></script>
