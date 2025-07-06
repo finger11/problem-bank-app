@@ -79,6 +79,10 @@ document.addEventListener("DOMContentLoaded", () => {
         <hr>
       `;
     });
+
+    resultDiv.innerHTML += `
+      <button class="submit" onclick="window.location.reload()">모의고사 다시풀기</button>
+    `;
   }
 
   window.startExam = startExam;
