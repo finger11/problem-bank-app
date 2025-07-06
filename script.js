@@ -53,6 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function showResult(score, results) {
+    window.scrollTo(0, 0);  // 맨 위로 이동
     const examDiv = document.getElementById("exam");
     examDiv.style.display = "none";
     const resultDiv = document.getElementById("result");
@@ -60,7 +61,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const totalScore = Math.round(score);
     const passFail = totalScore >= 60 ? "합격" : "불합격";
-    resultDiv.innerHTML += `<h1>${passFail} (${totalScore}점)</h1>`;
+
+    const totalQuestions = results.length;
+    const correctCount = results.filter(r => r.isCorrect).length;
+
+    resultDiv.innerHTML += `<h1>${correctCount}/${totalQuestions} (${passFail})</h1>`;
 
     results.forEach((item, idx) => {
       resultDiv.innerHTML += `
