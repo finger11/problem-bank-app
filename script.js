@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   async function startExam() {
-    document.getElementById("startBtn").style.display = "none";  // 시작 버튼 숨김
+    document.getElementById("startBtn").style.display = "none";
 
     const res = await fetch("questions.json");
     const data = await res.json();
@@ -70,38 +70,34 @@ document.addEventListener("DOMContentLoaded", () => {
     resultDiv.innerHTML += `<h1 style="color:${passFailColor}">${correctCount}/${totalQuestions} (${passFail})</h1>`;
 
     results.forEach((item, idx) => {
+      let noAnswerMark = "";
+      if (item.selected === null) {
+        noAnswerMark = `<p style="color:red">[무응답]</p>`;
+      }
+
       let choicesHtml = item.q.choices.map((choice, i) => {
         let mark = "";
         let markColor = "";
 
         if (item.q.answer === i + 1) {
-          // 정답
+          // 정답에는 항상 [O]
           mark = "[O]";
           markColor = "blue";
         }
-        if (item.selected === i + 1 && item.selected !== item.q.answer) {
-          // 오답으로 선택한 경우
+
+        if (item.selected !== null && item.selected === i + 1 && item.selected !== item.q.answer) {
+          // 사용자가 선택한 오답
           mark = "[X]";
           markColor = "red";
         }
-        if (item.selected === null && item.q.answer !== i + 1) {
-          // 무응답인데 정답이 아닌 보기에는 [무응답]
-          mark = "";
-          markColor = "";
-        }
-        if (item.selected === null && item.q.answer === i + 1) {
-          // 무응답이고 정답 항목
-          mark = "[무응답]";
-          markColor = "red";
-        }
 
-        // 최종 표기
         return `<div>${choice} ${mark ? `<span style="color:${markColor}">${mark}</span>` : ""}</div>`;
       }).join('');
 
       resultDiv.innerHTML += `
         <div>
           <p>${idx+1}. ${item.q.question_text.replace(/\n/g, "<br>")}</p>
+          ${noAnswerMark}
           ${choicesHtml}
           ${item.q.explanation ? `<p><em>해설: ${item.q.explanation.replace(/\n/g,"<br>")}</em></p>` : ""}
         </div>
